@@ -1,65 +1,55 @@
 # Universal TV Bridge
 
-Détection et connexion automatique PC ↔ TV/Box/Console/Mobile via tous les protocoles.
+Universal TV Bridge est une application Windows qui cherche des téléviseurs, boîtiers et appareils compatibles sur le réseau local ou en Bluetooth, puis propose les connecteurs pris en charge pour les utiliser depuis le PC.
 
-## Protocoles supportés
+## À quoi sert cet outil ?
 
-| Protocole | Appareils |
-|-----------|-----------|
-| **WiFi / SSDP / UPnP** | Smart TV Samsung, LG, Sony, Hisense… |
-| **mDNS / Bonjour** | Chromecast, Apple TV, TVs réseau |
-| **Bluetooth LE** | TV, enceintes, consoles BT |
-| **Miracast** | TV compatible Windows Wireless Display |
-| **DLNA** | Lecteurs média, TV DLNA |
-| **AirPlay** | iPhone, iPad, Apple TV |
-| **ADB / scrcpy** | Android (USB + WiFi) |
-| **Infrarouge** | TV Samsung/LG/Sony/Philips (émetteur USB requis) |
+Il rassemble dans une seule interface la découverte d’appareils et plusieurs moyens de connexion ou de contrôle : Cast, DLNA/UPnP, Bluetooth, Miracast, AirPlay, ADB et infrarouge.
 
-## Installation
+## Pourquoi l’utiliser ?
 
-```bash
-pip install -r requirements.txt
+Les appareils de salon n’utilisent pas tous le même protocole. Au lieu de chercher manuellement comment chaque appareil se connecte, l’application aide à repérer les appareils disponibles et à choisir un connecteur compatible.
+
+La compatibilité dépend du modèle, du réseau, des composants installés et parfois d’un matériel externe. La présence d’un protocole dans la liste ne garantit pas que chaque appareil ou fonction soit pris en charge.
+
+## Exemples d’utilisation
+
+- **Projeter ou étendre l’affichage du PC** : rechercher une TV compatible Miracast et utiliser le mode d’affichage Windows approprié.
+- **Lire un média sur une TV du réseau** : rechercher un récepteur DLNA ou Chromecast puis utiliser son connecteur si le modèle le permet.
+- **Afficher un appareil Android** : connecter l’appareil par USB ou ADB Wi-Fi et utiliser scrcpy, qui doit être installé séparément.
+- **Contrôler une TV en infrarouge** : connecter un émetteur USB compatible ; le PC seul ne dispose généralement pas de cette fonction.
+- **Retrouver un appareil utilisé souvent** : enregistrer l’appareil comme favori si la connexion a été établie.
+
+## Installation et démarrage
+
+Prérequis : Python et les dépendances listées dans `requirements.txt`. Certaines fonctions nécessitent des outils ou matériels optionnels.
+
+```powershell
+python -m pip install -r requirements.txt
 python main.py
 ```
 
-Ou double-cliquer `install.bat` puis lancer `python main.py`.
+On peut aussi lancer `install.bat`, puis `python main.py`.
 
-## Fonctionnalités
+## Protocoles et dépendances optionnelles
 
-- **Scan automatique** : détecte tous les appareils sur le réseau + Bluetooth
-- **Connexion en 1 clic** : Miracast, Chromecast, DLNA, BT
-- **Mode affichage** : Étendre / Dupliquer / PC uniquement / TV uniquement
-- **Mobile iOS** : réception AirPlay via AirServer / 5KPlayer
-- **Mobile Android** : miroir écran via scrcpy, connexion ADB WiFi
-- **Télécommande IR** : contrôle infrarouge (nécessite émetteur USB-UIRT/WinLIRC)
-- **Favoris** : sauvegarde des appareils préférés
-
-## Dépendances matérielles optionnelles
-
-| Fonctionnalité | Matériel requis |
-|----------------|-----------------|
-| Infrarouge | USB-UIRT ou émetteur WinLIRC |
-| AirPlay receiver | AirServer (payant) ou 5KPlayer (gratuit) |
-| Android miroir | scrcpy (gratuit, open-source) |
-| Android ADB WiFi | Mode développeur activé sur l'Android |
+| Protocole ou fonction | Dépendance ou limite |
+| --- | --- |
+| SSDP/UPnP, mDNS | Appareils visibles sur le même réseau local |
+| Bluetooth LE | Adaptateur Bluetooth et appareil compatible |
+| Miracast | Prise en charge par Windows, l’adaptateur et la TV |
+| DLNA / Chromecast | Récepteur compatible accessible sur le réseau |
+| AirPlay | Récepteur AirPlay tel qu’AirServer ou 5KPlayer |
+| Android via ADB / scrcpy | Mode développeur et outils ADB/scrcpy |
+| Infrarouge | Émetteur USB-UIRT ou matériel compatible WinLIRC |
 
 ## Architecture
 
-```
+```text
 universal-tv-bridge/
-├── main.py                   # Point d'entrée
-├── config_manager.py         # Persistance des favoris
-├── discovery/
-│   ├── models.py             # Device, DeviceType, Protocol
-│   ├── bluetooth_scanner.py  # Scan BLE (bleak)
-│   ├── network_scanner.py    # SSDP + mDNS
-│   └── infrared.py           # Contrôle IR
-├── connectors/
-│   ├── miracast.py           # Windows Wireless Display
-│   ├── chromecast.py         # Google Cast
-│   ├── bluetooth_conn.py     # Connexion BT
-│   ├── dlna.py               # DLNA/UPnP renderer
-│   └── mobile.py             # iOS AirPlay + Android ADB
-└── ui/
-    └── main_window.py        # Interface customtkinter
+├── main.py
+├── config_manager.py
+├── discovery/       découverte réseau, Bluetooth et infrarouge
+├── connectors/      connecteurs par protocole
+└── ui/              interface CustomTkinter
 ```
