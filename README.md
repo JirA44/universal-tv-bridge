@@ -31,6 +31,26 @@ python main.py
 
 On peut aussi lancer `install.bat`, puis `python main.py`.
 
+## English
+
+### What is Universal TV Bridge for?
+
+Universal TV Bridge is a Windows application that discovers compatible TVs, streaming boxes, and other devices on a local network or over Bluetooth, then offers available connection methods.
+
+### Why use it?
+
+Home devices use different protocols. The app provides one place to discover nearby devices and select a compatible connector instead of searching for each connection method separately.
+
+### Examples
+
+- Find a Miracast-compatible TV to extend or mirror the PC display.
+- Discover a Chromecast or DLNA receiver on the local network.
+- Mirror an Android device using ADB and scrcpy, installed separately.
+- Use infrared control only when a compatible USB transmitter is connected.
+
+Support depends on the device, network, Windows capabilities, and optional hardware or software. A listed protocol does not guarantee that every device supports every feature.
+
+
 ## Protocoles et dépendances optionnelles
 
 | Protocole ou fonction | Dépendance ou limite |
